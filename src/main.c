@@ -148,7 +148,6 @@ static int	alg_bell_ford(t_tmp *start)
 	t_tmp	*curr;
 	t_room	*prev_r;
 	t_next	*curr_n;
-	t_next	*prev_n;
 	int		counter;
 
 	curr = start;
@@ -159,15 +158,12 @@ static int	alg_bell_ford(t_tmp *start)
 		while (curr_n)
 		{
 			prev_r = curr_n->room;
-			prev_n = prev_r->next;
-			while (prev_n && prev_n->room != curr->room)
-				prev_n = prev_n->next;
-			if (prev_r->min_w + prev_n->weight < curr->room->min_w
-			&& prev_r != g_lemin->finish && !curr->room->superpos && !prev_r->superpos
+			if (prev_r->min_w + curr_n->weight < curr->room->min_w
+			&& prev_r != g_lemin->finish
 			&& prev_r->min_w != (INT_MAX / 2))
 			{
 				counter++;
-				curr->room->min_w = prev_r->min_w + prev_n->weight;
+				curr->room->min_w = prev_r->min_w + curr_n->weight;
 				curr->room->prev = prev_r;
 			}
 			curr_n = curr_n->next;
